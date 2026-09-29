@@ -1,0 +1,23 @@
+int main_(void)
+{
+	// 1. Hardware Initialization
+	HAL_Init();
+
+	// 2. Configure Clocks
+	SystemClock_Config();
+
+	// 3. Configure Peripherals
+	GPIO_Init();
+	UART_Init();
+	Timer_Init();
+
+	// 4. Application Loop
+	while(1)
+	{
+		Read_Sensor();
+		Process_Data();
+		Control_Output();
+	}
+
+	return 0;
+}

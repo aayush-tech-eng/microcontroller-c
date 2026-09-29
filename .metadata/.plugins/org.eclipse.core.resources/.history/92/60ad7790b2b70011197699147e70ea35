@@ -1,0 +1,30 @@
+/*
+ * chip_info.c
+ *
+ *  Created on: Sep 23, 2026
+ *      Author: aayush_shahi
+ */
+
+#include "chip_info.h"
+
+/* Hardware addresses stay private to this file */
+
+#define SCB_CPUID (*(volatile uint32_t *)0xE000ED00)
+#define FLASH_SIZE_KB (*(volatile uint16_t *)0x1FFF7A22)
+#define UID_BASE ((volatile uint32_t *)0x1FFF7A10)
+
+void chip_info_read(ChipInfo_t *info)
+{
+	if (info == 0)
+	{
+		return;
+	}
+
+	info->cupid = SCB_CPUID;
+	info->core_partno = (info->cpuid >> 4) & 0xFFF;
+	info->flash_kb = FLASH_SIZE_KB;
+
+	info->uid[0] = UID_BASE[0];
+	info->uid[1] = UID_BASE[1];
+	info->uid[2] = UID_BASE[2];
+}

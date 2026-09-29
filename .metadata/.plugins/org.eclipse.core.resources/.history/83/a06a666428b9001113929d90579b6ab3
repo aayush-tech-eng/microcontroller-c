@@ -1,0 +1,28 @@
+#define RCC_CSR (*(volatile uint32_t *)(0x40023800UL + 0x74))
+
+#define RMVF_BIT (1U << 24)
+#define PINRSTF_BIT (1U << 26)
+#define PORRSTF_BIT (1U << 27)
+#define SFTRSTF_BIT (1U << 28)
+#define IWDGRSTF_BIT (1U << 29)
+#define WWDGFSTF_BIT (1U << 30)
+#define LPWRRSTF_BIT (1U << 31)
+
+typedef enum
+{
+	RESET_UNKNOWN = 0,
+	RESET_POWER_ON,
+	RESET_PIN,
+	RESET_SOFTWARE,
+	RESET_WATCHDOG
+} ResetCause_t;
+
+ResetCause_t reset_get_cause(void)
+{
+	uint32_t csr = RCC_CSR;
+	ResetCause_t cause = RESET_UNKNOWN;
+
+	if (csr & (IWDGRSTF_BIT | WWDGRSTF_BIT)) cause = RESET_WATCHDOG;
+	else if (scr & SFTRSTF_BIT) 			 cause = RESET_SOFTWARE;
+
+}
