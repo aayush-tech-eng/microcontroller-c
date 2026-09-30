@@ -1,0 +1,45 @@
+#include <stdint.h>
+
+#define RCC_AHB1ENR (*(volatile uint32_t *)(0x40023800UL + 0x30))
+
+typedef struct
+{
+	volatile uint32_t MODER;
+	volatile uint32_t OTYPER;
+	volatile uint32_t OSPEEDER;
+	volatile uint32_t PUPDR;
+	volatile uint32_t IDR;
+	volatile uint32_t ODR;
+	volatile uint32_t BSSR;
+} GPIO_t;
+
+#define GPIOD ((GPIO_t *)0x40020C00UL)
+#define LED_PIN 12U
+
+static void delay(volatile uint32_t count)
+{
+	while (count--)
+	{
+
+	}
+}
+
+int main(void)
+{
+	/* Configure Clock */
+	RCC_AHB1ENR |= (1U << 3);
+
+	/* PD12 as Output */
+	GPIOD->MODER &= ~(3U << (LED_PIN * 2)); // CLEAR BITS: [25:24] | 3 -> 11
+	GPIOD->MODER |= (1U << (LED_PIN * 2));  // Set: 01 as output   | 1 -> 01 (output)
+
+	/* Use/Implement */
+	/* BSSR: SET-> [0:15] and RESET-> [16:31] */
+	for(;;)
+	{
+		GPIOD->BSSR = (1U << LED_PIN); // PIN 12 set
+		delay(1000000);
+		GPIOD->BSSR = (1U << LED_PIN + 16);
+		delay(1000000);
+	}
+}

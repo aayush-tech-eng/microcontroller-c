@@ -1,0 +1,35 @@
+#include "stm32f4xx.h"
+
+int main(void)
+{
+    /* Enable GPIOA clock */
+    RCC->AHB1ENR |= (1U << 0);
+
+    /* PA0 = Input */
+    GPIOA->MODER &= ~(3U << 0);
+
+    /* PA0 = Pull-down */
+    GPIOA->PUPDR &= ~(3U << 0);
+    GPIOA->PUPDR |=  (2U << 0);
+
+    /* PA5 = Output */
+    GPIOA->MODER &= ~(3U << 10);
+    GPIOA->MODER |=  (1U << 10);
+
+    while (1)
+    {
+        /* Read button */
+        uint8_t pressed = (GPIOA->IDR >> 0) & 1U;
+
+        if (pressed)
+        {
+            /* Button pressed → LED ON */
+            GPIOA->ODR |= (1U << 5);
+        }
+        else
+        {
+            /* Button released → LED OFF */
+            GPIOA->ODR &= ~(1U << 5);
+        }
+    }
+}

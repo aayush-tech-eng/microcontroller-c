@@ -82,3 +82,27 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-09-28 15:31:54.324
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-09-29 14:24:44.897 -----------------------------------------------
+eclipse.buildId=Version 2.2.0
+java.version=21.0.10
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-09-29 14:24:53.804
+!MESSAGE Log4j2 initialized with config file /home/aayush/Desktop/Tech Skills/Embedded Engineering/Microcontroller & C/microcontroller-c/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-09-29 14:24:56.544
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-09-30 14:40:50.303 -----------------------------------------------
+eclipse.buildId=Version 2.2.0
+java.version=21.0.10
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-09-30 14:40:57.751
+!MESSAGE Log4j2 initialized with config file /home/aayush/Desktop/Tech Skills/Embedded Engineering/Microcontroller & C/microcontroller-c/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-09-30 14:41:01.013
+!MESSAGE Started RMI Server, listening on port 41337

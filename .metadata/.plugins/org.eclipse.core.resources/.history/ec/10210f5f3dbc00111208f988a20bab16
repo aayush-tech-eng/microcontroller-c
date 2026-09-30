@@ -1,0 +1,23 @@
+For STM32 GPIOX->MODER, each pin gets 2 bits.
+All 32 bits in MODER Register get assigned to PX0 to PX15.
+
+For instance, GPIOA Port:
+
+PINS  MODER Bits      Shifts       Clear Expression
+PA0	-> [1:0]     		0			GPIOA->MODER &= ~(3U << 0); 3 in Binary: 11
+PA1	-> [3:2]			2			GPIOA->MODER &= ~(3U << 2);
+PA2	-> [5:4]			4			GPIOA->MODER &= ~(3U << 4);
+PA3	-> [7:6]			6			GPIOA->MODER &= ~(3U << 6);
+PA4	-> [9:8]			8			GPIOA->MODER &= ~(3U << 8);
+PA5	-> [11:10]			10			GPIOA->MODER &= ~(3U << 10);
+PA6	-> [13:12]			12			GPIOA->MODER &= ~(3U << 12);
+PA7	-> [15:14]			14			GPIOA->MODER &= ~(3U << 14);
+PA8	-> [17:16]			16			GPIOA->MODER &= ~(3U << 16);
+PA9	-> [19:18]			18			GPIOA->MODER &= ~(3U << 18);
+PA10-> [21:20]			20			GPIOA->MODER &= ~(3U << 20);
+PA11-> [23:22]			22			GPIOA->MODER &= ~(3U << 22);
+PA12-> [25:24]			24			GPIOA->MODER &= ~(3U << 24);
+PA13-> [27:26]			26			GPIOA->MODER &= ~(3U << 26);
+PA14-> [29:28]			28			GPIOA->MODER &= ~(3U << 28);
+PA15-> [31:30]			30 			GPIOA->MODER &= ~(3U << 30);
+

@@ -1,0 +1,28 @@
+The GPIO Peripherals has registers: MODER, ODR, IDR, and so on. You look at the MCU's reference manual/datasheet
+to see which peripheral controls the pin or function. For instance, if LED is connected to PA5, you need the GPIOA
+peripheral because PA5 belongs to GPIO port A.
+
+To configure PA5 as an output, you use:
+
+
+GPIOA->MODER
+
+Why MODER?
+Because the STM32 reference manual says the GPIO peripheral has a Mode Register (MODER) 
+that controls whether each pin:
+
+00 - Input
+01 - Output
+10 - Alternate Function
+11 - Analog
+
+Code Sample:
+
+pin_no = 5;
+// we first use MODER register to define the properties what a pin should be.
+GPIOA->MODER &= ~(3U << (pin_no) * 2); // clear the 2 bits from [11:10] | 3 in Binary: 11
+GPIO->MODER |= (1U << (pin_no) * 2);   // 1 in Binary: 01 (01 is output) | MODER[11:10] = 01 (output)
+
+// Now, we use ODR/BSSR register to set the value: PA5 needs to get HIGH, we use ODR register (1 bit)
+GPIOA->ODR |= (1U << 5); // pin 5 set to 1, HIGH
+GPIOA->ODR &= ~(1U << 5); // pin 5 set to 0, LOW
