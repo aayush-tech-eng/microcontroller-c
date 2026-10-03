@@ -1,0 +1,40 @@
+Flash contains the program we built. 
+- machine instructions
+- constants                              -----> Instruction Feteched to CPU (CPU fetches it)
+- program logic            
+- lookup tables, etc
+
+The CPU fetches instructions from Flashes, then executes them in the CPU.
+
+At 16 MHz, Flash may be fast enough to provide the requested data with few/no wait states.
+
+CPU at 168 MHz asks for an instruction to quick and Flash will need a little more time resulting
+"wait states" and Flash provides the instruction, and CPU exeucutes it.
+
+So, wait states don't make Flash Faster. They tell the CPU/Flash interface: 
+"Don't expect the Flash data immediately; give Flash N CPU cycles to respond."
+
+
+What happens if latency is too low?
+
+CPU @ 168 MHz
+      │
+      │ fetch instruction
+      ▼
+Flash controller
+      │
+      │ ← insufficient wait states
+      ▼
+❌ invalid/unavailable instruction data
+      │
+      ▼
+CPU may fault
+      │
+      ▼
+HardFault
+
+
+
+The CPU is running faster than Flash can reliably respond to under the current latency 
+configuration. If insufficient wait states are configured, the CPU may receive invalid data 
+during an instruction fetch, resulting in a fault.

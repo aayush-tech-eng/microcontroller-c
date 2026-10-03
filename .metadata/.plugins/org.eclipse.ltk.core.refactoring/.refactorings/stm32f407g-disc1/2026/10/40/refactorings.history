@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;stm32f407g-disc1/Interrupts/src/nvic.txt&apos; to &apos;interrupt.txt&apos;" description="Rename resource &apos;nvic.txt&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Interrupts/src/nvic.txt" name="interrupt.txt" stamp="1791060438610" updateReferences="true"/>
+</session>

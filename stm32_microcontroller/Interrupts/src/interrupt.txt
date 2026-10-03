@@ -1,0 +1,180 @@
+NVIC (Nested Vectored Interrupt Controller) is the part of an ARM Cortex-M microcontroller that manages interrupts and tells the CPU which interrupt to handle.
+Think of it as the traffic controller for interrupts:
+
+Hardware Event
+     |
+     |
+   	NVIC
+     |
+     |----- Which Interrupt? 
+     |----- Is it enabled?
+     |----- What is the priority?
+     |----- Which ISR should run?
+     			|
+     			|
+     	    CPU -> ISR
+     	    
+For example:
+
+Button Pressed -> NVIC receives interrupt -> NVIC tells CPU -> CPU pauses current code -> button_isr() runs -> CPU returns to previous code
+EXTI: External Interrupt/Event Controller
+
+The key thing to rememer:
+NVIC is the hardware that manages interrupts between peripherals and the CPU on ARM Cortex-M processors. 
+    
+/*
+ * NVIC- Nested Vectored Interrupt Controller lives inside the Cortex-M4. It is ARM's Cortex-M chip.
+ * CPU is designed by ARM and peripherals by STM.
+ * NVIC sits between peripherals and the CPU and decides three things: which interrupts are allowed 
+ * through, which one goes first when several arrive, and whether an arriving interrupt can preempt the
+ * one already running.
+ */
+
+
+Interrupt and NVIC Peripherals
+1. Enable the peripherals: first you need to give the peripheral a clock
+   * RCC: To Enable GPOIA clock for instance
+   * Enabling the peripherals mean we can now configure and use the peripherals
+2. Exit the configuration
+   * You finsh configuring the peripheral, and then the program moves on to the next initialization step.
+   For example:
+   
+   int main (void)
+   {
+   	//1. Enable GPIOA Clock
+   	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+   	
+   	//2. Configure PA0
+   	GPIOA->MODER &= ~(3U << (0 * 2)); // PA0
+   	
+   	//3. Configure PA5
+   	GPIOA->MODER |= (1U << (5 * 2));  // PA5
+   }
+   
+   Configured GPIOA -> Done with GPIOA Configuration -> Move to EXIT Configuration (bulletin 3: Ask one)
+3. Ask: Should this event generate an interrupt?
+   * This is the peripheral/EXTI level
+   * PA0: HIGH ----to ----- LOW
+   * GPIO/EXTI system here detects that transition, but detecting the event doesn't mean: Interrupt the CPU.
+   
+   * So, here you should ask the peripheral/event source generate an interrupt request? Do you need an interrupt
+     for PA0: HIGH to LOW event.
+     * If yes,then after the event is detected, enable interrupt and generate IRQ request.
+4. Then the NVIC gets involved: PA0 Event -> EXTI0 -> IRQ Request
+   * The request reaches the NVIC
+   * The NVIC asks: "Is IRQ #6 enabled?"
+   For example:
+   
+   NVIC_EnableIRQ(EXTI0_IRQn);
+   
+   If enabled:
+   
+   EXTI0 IRQ request -> NVIC -> IRQ Enabled -> Yes -> CPU
+   
+5. CPU for NVIC/Interrup
+   * In super loop: while (1) { }
+
+BUTTON
+  ↓
+PA0 changes
+  ↓
+EXTI detects event
+  ↓
+EXTI interrupt enabled
+  ↓
+IRQ request generated
+  ↓
+NVIC receives IRQ
+  ↓
+NVIC says "enabled"
+  ↓
+CPU receives interrupt
+   
+   
+Now the CPU temporarily stops executing the normal code.
+
+It saves the necessary execution state and looks up the address of the appropriate Interrupt Service Routine (ISR).
+
+
+-------------------------EXTI GPIO Interrupts-----------------------------------
+
+EXTI: External Interrupt/Event Controller watches GPIO pins and raises an interrupt when
+changes. 
+
+IRQ Mapping
+Line 0-4 get their own handler.
+
+EXTI Line                   Handler                 IRQn
+0                        EXTI0_IRQHandler            6
+1                        EXTI1_IRQHandler            7
+2                        EXTI2_IRQHandler            8
+3                        EXTI3_IRQHandler            9
+4                        EXTI4_IRQHandler            10
+5-9                      EXTI9_5_IRQHandler          23
+10-15                    EXTI15_10_IRQHandler        40
+
+
+In a shared handler you must read EXTI->PR to find out which pin fired. 
+
+The 5 setup steps:
+1. SYSCFG clock on- RCC->APB2ENR bit 14
+2. SYSCFG_EXTICR- select which port feeds the line
+3. EXTI->RTSR/FTSR- choose rising, falling, or both edges 
+4. EXTI->IMR- unmask the line (peripheral-level enable)
+5. NVIC enable- let it reach the CPU
+
+SYSCFG_EXTICR
+Four registers, 4 bits per line:
+
+12-------15 11-------8 7-------4 3-------0
+ EXTICR[3]   EXTICR[2] EXTICR[1] EXTICR[0]
+ 
+ Value: 
+ EXTI0				EXTI1
+ 0000: PA0          0000: PA1
+ 0001: PB0			0001: PB1
+ 0010: PC0			0010: PC1        so on for EXTI2, EXTI3
+ 0011: PD0			0011: PD1
+ 0100: PE0			0100: PE1
+ --- so on        --- so on
+ 
+
+
+EXTI0   ← one pin from PA0/PB0/PC0/.../PF0
+EXTI1   ← one pin from PA1/PB1/PC1/.../PF1
+EXTI2   ← one pin from PA2/PB2/PC2/.../PF2
+...
+EXTI15  ← one pin from PA15/PB15/PC15/.../PF15
+
+
+
+
+EXTI line       NVIC IRQ handler
+---------     ------------------------
+EXTI0           EXTI0_IRQHandler
+EXTI1           EXTI1_IRQHandler
+EXTI2           EXTI2_IRQHandler
+EXTI3           EXTI3_IRQHandler
+EXTI4           EXTI4_IRQHandler
+
+EXTI5           ┐
+EXTI6           │
+EXTI7           ├── EXTI9_5_IRQHandler
+EXTI8           │
+EXTI9           ┘
+
+EXTI10          ┐
+EXTI11          │
+EXTI12          ├── EXTI15_10_IRQHandler
+EXTI13          │
+EXTI14          │
+EXTI15          ┘
+
+
+
+
+
+
+
+
+
