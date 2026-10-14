@@ -1,0 +1,63 @@
+The Clock System controls how fast the STM32 CPU and peripherals operate. Think of it as the
+heartbeat of the microcontroller.
+
+For example: the CPU clock determines how quickly instructions execute, while peripheral clocks
+control modules such as GPIO, UART, SPI, and timers.
+
+
+A. CPU Clock
+	Instruction Sample:
+	
+	int a = 10;
+	int b = 20;
+	int c = a + b;
+	
+	The compiler converts it into machine instructions that the CPU can execute. 
+	
+	Instruction (Conceptual) 			Meaning
+	LOAD								Load a value into a CPU Register
+	ADD									Add two values
+	STORE								Save a result to memory
+	
+	Note: The CPU clock determines how quickly the processor can execute these instructions, though
+	one instruction may take multiple clock cycles.
+
+B. Peripherals Clock
+	Imagine you want to turn ON an LED using a microcontroller.
+	
+	GPIOA->ODR |= (1U << 5); // PA5: index 5 to 1 (HIGH)
+	
+	Two things must happen:
+	a. CPU Clock: The CPU executes instructions to read, modify, and write the GPIO register.
+	b. GPIO Peripheral Clock: The GPIO hardware/ports must receive its clock if the microcontorller
+	   requires it to be enabled. Otherwise, GPIO register access or operation may not work as
+	   expected. Basically, it drives the timing or operation of hardware modules. 
+	   
+	Why do we enable/disable the GPIO clock?
+		- Enable GPIO clock: Allows the microcontroller to access and operate the GPIO peripheral.
+		- Disable GPIO clock: Reduces power consumption when the GPIO peripheral is no longer needed, on MCUs that support clock gating.
+		- CPU processing: The CPU still executes instructions to configure and control GPIO. Enabling the GPIO clock does not automatically
+		  reduce CPU workload.
+
+1. Clock Sources
+a. HSI - High Speed Internal: Application Startup
+b. HSE - High Speed External: To configure a higher-performance clock
+c. LSI - Low Speed Internal: Independent Watchdog (IWDG)
+d. LSE - Low Speed External: Real-Time Clock (RTC) to maintain time.
+
+2. PLL - Phase-Locked Loop
+   The PLL lets us generate a high-frequency system clock from a lower-frequency input.
+   
+   SYSCLK = (HSE / M ) * (N / P)
+   
+   Important: PLL settings must also satisfy the MCU's input-frequency, VCO-Frequency, and 
+   output-frequency limits.
+
+3. Clock Tree and Buses
+   a. SYSCLK - 168 MHz
+   b. AHB - 168 MHz (CPU, Memory, DMA Bus Domains)
+   c. APB1 - 42 MHz (USART2, I2C, TIM2)
+   d. APB2 - 84 MHz (USART1, SPI1, TIM1)
+
+
+	   

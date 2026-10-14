@@ -1,0 +1,18 @@
+In professional embedded development, knowing how to find information in documentation is just as 
+important as writing code. 
+
+1. Datasheet (DS): 
+Use it when you need to know (Think: What can this chip physically do?):
+a. Pin assignments and alternate functions
+b. Supply voltage and electrical limits
+c. Package dimensions
+d. Memory size and device specifications
+
+2. Reference Manual
+Use it when you need to know (THink: How do I control the hardware?)
+a. Which registers control a peripheral
+b. Which bits enable or configure hardware
+c. How timers, GPIO, UART, ADC, and DMA work
+d. Which clock enables a peripheral
+
+

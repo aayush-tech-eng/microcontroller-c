@@ -1,0 +1,34 @@
+In an embedded system, Reset brings the microcontroller back to a defined state, while Power
+Management controls how much energy it consumes. 
+
+1. Reset Sources
+   a. POR - Power-on Reset
+   	  - Occurs when the MCU is powered on. 
+   b. NRST pin Reset
+   	  - An external circuit or push button pulls the active-low NRST pin low.
+   c. Watchdog reset
+   	  - If software fails to refresh the watchdog in time, the watchdog resets the MCU.
+   d. Software Reset
+      - Software requests a system reset through the Cortex-M system control mechanism. 
+      
+How it works?
+- NVIC_SystemReset() requests a system reset.
+- The MCU restarts through its reset sequence.
+- Startup code runs again, followed by main().
+
+Use this when the firmware cannot safely recover from a critical error. Before resetting, 
+save important diagnostic information if required.
+
+2. Power supply pins: VDD, VDDA, VBAT
+   These pins supply different parts of the microcontroller.
+   	 a. VDD — Digital supply
+	    - Powers the main digital circuitry, including the CPU and digital peripherals.
+		  Example: The main regulated supply on a microcontroller board.
+	 b. VDDA — Analog supply
+		- Powers analog circuitry such as the ADC and other analog blocks.
+		  Example: A carefully designed analog supply helps reduce measurement noise.
+	 c. VBAT — Backup-domain supply
+		Can power the RTC and backup registers when the main supply is absent, provided the device's 
+		backup-power arrangement supports it.
+
+Always follow the exact MCU datasheet for supply voltage ranges, pin connections, and decoupling capacitors.

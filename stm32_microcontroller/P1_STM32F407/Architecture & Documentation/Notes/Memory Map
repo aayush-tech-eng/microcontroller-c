@@ -1,0 +1,24 @@
+Memory Map
+The CPU accesses memory and peripheral registers using addresses.
+
+Address region 		Purpose
+0x08000000			Internal Flash- program storage
+0x20000000			SRAM- runtime variables, stack, heap
+0x40000000			Peripheral register address region
+0xE0000000 			Cortex-M system control and debug region
+
+What happens when you access an address?
+</> Flash - 0x080000000
+Your firmware instructions are stored here and normally execute from Flash. 
+Flash is non-volatile and read-only at runtime.
+
+</> SRAM - 0x20000000
+Runtime data such as variables, buffers, stacks, resides here.
+SRAM is fast, writable, and erased on every reset.
+
+</> Peripherals - 0x40000000
+Reading or writing the appropriate address lets firmware interact with hardware registers.
+
+volatile: "re-read from memory every time, never optimize away." Every peripheral register and 
+every ISR-shared variable must be volatile. 
+
