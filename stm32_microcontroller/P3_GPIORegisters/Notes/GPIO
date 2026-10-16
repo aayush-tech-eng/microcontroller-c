@@ -1,0 +1,144 @@
+GPIO stands for General-Purpose Input/Outpu. It allows the MCU to communicate with external
+hardware such as LEDs, buttons, sensors, relays, and other digital devices.
+
+- In STM32F407 GPIO ports are named GPIOA through GPIOI on the standard STM32F407 device family.
+- Each available port has 16 pins: Pin 0 through Pin 15
+- Each GPIO port has seven primary registers used for configuration and data access.
+
+1. Primary GPIO Registers
+
+ Register            Purpose               			 		 Key concept
+  MODER			  Selects pin mode       				Input, output, alternate function, analog
+  OTYPER		  Selects output type					Push-pull or open-drain
+  OSPEEDR		  Controls output speed 				Low, medium, high, very high
+  PUPDR			  Configures internal pull resistors    No pull, pull-up, pull-down
+  IDR             Reads input levels                    Read-only
+  ODR			  Stores output levels					Read/write
+  BSRR			  Sets or resets output bits			Atomic bit set/reset
+  
+  
+2. Understand Each Register
+A. MODER - GPIO Mode Register
+   - Each pin uses two bits.
+   
+   Bits 		Mode
+   00			Input
+   01 			General-Purpose Outpu
+   10			Alternate Function
+   11			Analog
+   
+   Example: Configure PA5 as an output
+   
+   GPIOA->MODER &= ~(3U << 10);  // Clear PA5 mode bits
+   GPIOA->MODER |=  (1U << 10);  // Set output mode (01)
+   
+B. OTYPER - Output type register
+   - Each pin uses one bit.
+   
+   Bit			Function
+   0			Push-pull: actively drives HIGH and LOW
+   1			Open-drain: actively drives LOW but requires a pull-up to achieve HIGH
+   
+   Example:
+   
+   GPIOA->OTYPER &= ~(1U << 5);  // PA5 push-pull
+   GPIOA->OTYPER |=  (1U << 5);  // PA5 open-drain
+   
+C. OSPEEDR - GPIO Output Speed Register
+   - Each pins uses 2 bits.
+   - Controls output transition speed (slew rate), not the CPU clock frequency. 
+   
+   Bits 		Mode
+   00			Low
+   01			Medium
+   10 			High
+   11			Very High
+   
+   Example: Configure PA5 for High Speed
+   
+   GPIOA->OSPEEDR &= ~(3U << 10); // PA5 (5 * 2) - Clear PA5 Speed Bits. 3U (dec) to 11 (binary)
+   GPIOA->OSPEEDR |= (2U << 10).  // PA5 (5 * 2) - Set High Speed ( 2U (dec) to 10 (binary))
+   
+D. PUPDR - GPIO Pull-Up/Pull-Down Register
+   - Each pin uses 2 bits.
+   - Defines the internal pull resistor configuration.
+   
+   Bits 		Configuration 
+   00 			No pull-up or pull-down
+   01			Pull-up
+   10 			Pull-down
+   11			Reserved
+   
+   Example: Enable pull-up on PA5
+   
+   GPIOA->PUPDR &= ~(3U << 10); // Clear PA5 pull bits
+   GPIOA->PUPDR |= (1U << 10);  // Enable pull-up
+   
+E. IDR - Input Data Register 
+   - Each pin uses 1 bit.
+   - Reads the current logic level at the GPIO input.
+   
+   Bit 		Value
+   0		LOW
+   1 		HIGH
+   
+   Example: Read PA5
+   
+   if (GPIOA->IDR & (1U << 5))
+   {
+   		// PA5 is HIGH
+   }
+   else
+   {
+   		// PA5 is LOW
+   }
+
+F. ODR - Output Data Register
+   - Each pin uses 1 bit.
+   - Stores the output level driven by the GPIO when configured as an output.
+   
+   Bit 		Function
+   0 		Drive LOW
+   1 		Drive HIGH
+   
+   Example: Set or clear PA5
+   
+   GPIOA->ODR |= (1U << 5); // Set PA5 HIGH
+   GPIOA->ODR &= ~(1U << 5); // Set PA5 LOW
+   
+G. BSRR - Bit Set/Reset Register
+   - A 32-bit write-only register on many STM32 families.
+   - The lower 16 bits set pins; the upper 16 bits reset pins. 
+   - Allow atomic pin updates without a read-modify-write operation on ODR.
+   
+   Bit 			Function
+   0 - 15		Set Corresponding pin HIGH
+   16 - 32		Reset Corresponding pin LOW
+   
+   Example: Set and reset PA5
+   
+   GPIOA->BSRR = (1U << 5); // Set PA5 HIGH
+   GPIOA->BSRR = (1U << (5 + 16)); // Reset PA5 LOW
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
