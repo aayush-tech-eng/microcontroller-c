@@ -1,0 +1,35 @@
+NVIC - Nested Vectored Interrupt Controller
+   - The NVIC is a hardware block inside the ARM Cortex-M4 core that manages interrupts: enabling them, assigning priorities, tracking
+     their status, and supporting interrupt nesting.
+     
+     1. Enablie and Disable IRQ
+     	
+     	#include "stm32f4xx.h"
+     	
+     	void interrupt_init(void)
+     	{
+     		NVIC_EnableIRQ(EXTI0_IRQn); // Enable EXTI0 Interrupt
+     	}
+     	
+     	void interrupt_stop(void)
+     	{
+     		NVIC_DisableIRQ(EXTIO_IRQn); // Disable EXTI0 Interrupt
+     	}
+     	
+     2. Interrupt Priority
+     	a. Priority 0 : Highest Urgency
+     	b. Priority 15: Lowest Urgency
+     	
+     	- A higher-priority interrupt can preempt a lower-priority ISR.
+     	
+     	
+     	Example:
+     	
+     	void interrupt_init(void)
+     	{
+     		NVIC_SetPriority(EXTI0_IRQn, 2); // High Priority
+     		NVIC_SetPriority(EXTI1_IRQn, 6); // Lower Priority
+     		
+     		NVIC_EnableIRQ(EXTI0_IRQn);
+     		NVIC_EnableIRQ(EXTI1_IRQn);
+     	}

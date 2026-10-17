@@ -1,0 +1,34 @@
+An interrupt (Interrupt Request) is a signal from hardware that asks the CPU to handle an event immediately, without 
+continuously checking whether the event occured. 
+
+Example: A GPIO pin detects a rising edge from a sensor. The CPU pauses its current task, executes the interrupt handler, and then resumes its previous task.
+
+Industry Example: A motor controller detects a fault signal and interrupts normal execution to respond quickly. 
+
+
+A. Vector Table in Flash
+   The interrupt vector table stores the addresses of interrupt handlers. THe CPU uses it to determine which function 
+   to execute for a particular interrupt.
+   
+   On a typical STM32 MCU, flash begin at 0x08000000.
+   - The 1st vector entry contains the initial stack pointer.
+   - The reset vector points to the startup code.
+   - Other entries point to exception and IRQ Hanlders. 
+   
+   For example: 
+   
+   // Conceptual example: 
+   vector_table[0] = initial _stack_pointer;
+   vector_table[1] = Reset_Handler;
+   vector_table[2] = NMI_Handler;
+   
+   // ...
+   vector_table[16 + 6] = EXTI0_IRQHandler; // Illustrative IRQ Index
+   
+   Note: The actual IRQ Index depends on the MCU. The vector table is typically generated through the startup file and linker configuration. 
+   
+B. ISR: Interrupt Service Routine
+   - An ISR is the function executed when an interrupt occurs. 
+   - The function name must match the handler name expected by the MCU's startup file.
+   
+   
