@@ -12,10 +12,17 @@
 	<section name="NewImportWizardAction">
 		<section name="STM32ProjectCreationImportWizard.dialogBounds">
 			<item key="DIALOG_X_ORIGIN" value="75"/>
-			<item key="DIALOG_Y_ORIGIN" value="205"/>
+			<item key="DIALOG_Y_ORIGIN" value="204"/>
 			<item key="DIALOG_WIDTH" value="900"/>
 			<item key="DIALOG_HEIGHT" value="627"/>
 			<item key="DIALOG_FONT_NAME" value="1|Ubuntu Sans|11.0|0|GTK|1|"/>
 		</section>
+	</section>
+	<section name="WorkbenchPreferenceDialog.dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="78"/>
+		<item key="DIALOG_Y_ORIGIN" value="122"/>
+		<item key="DIALOG_WIDTH" value="895"/>
+		<item key="DIALOG_HEIGHT" value="593"/>
+		<item key="DIALOG_FONT_NAME" value="1|Ubuntu Sans|11.0|0|GTK|1|"/>
 	</section>
 </section>

@@ -111,7 +111,7 @@ G. BSRR - Bit Set/Reset Register
    - The lower 16 bits set pins; the upper 16 bits reset pins. 
    - Allow atomic pin updates without a read-modify-write operation on ODR.
    
-   Bit 			Function
+   Bits			Function
    0 - 15		Set Corresponding pin HIGH
    16 - 32		Reset Corresponding pin LOW
    
@@ -120,8 +120,19 @@ G. BSRR - Bit Set/Reset Register
    GPIOA->BSRR = (1U << 5); // Set PA5 HIGH
    GPIOA->BSRR = (1U << (5 + 16)); // Reset PA5 LOW
    
+H. LCKR - GPIO Configuration Lock Register
+   - Locks selected GPIO pin configuration until a reset, using a lock sequence.
+   - Helps prevent accidental changes to protected pin configurations
    
+   Bits			Function
+   0 - 15		Select pins to lock
+   16			Lock key bit
    
+   Example: Lock PA5 Configuration
+   
+   GPIOA->LCKR = (1U << 5) | (1U << 16);
+   GPIOA->LCKR = (1U << 5);
+   GPIOA->LCKR = (1U << 5) | (1U << 16);
    
    
    
