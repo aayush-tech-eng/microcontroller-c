@@ -44,6 +44,40 @@ void EXTI0_IRQHandler(void)
 int main (void)
 {
 	RCC_AHB1ENR |= (1U << 0) | (1U << 3); // GPIOA, GPIOD
+	RCC_APB2ENR |= (1U << 14); 			  // SYSCFG
+
+	// PA0 Input, pull-down
+	GPIOA->MODER &= ~(3U << (BTN * 2));
+	GPIOA->PUPDR &= ~(3U << (BTN * 2));
+	GPIOA->PUPDR |= (2U << (BTN * 2));
+
+	// PD12 Output
+	GPIOD->MODER &= ~(3U << (LED * 2));
+	GPIOD->MODER |= (1U << (LED * 2));
+
+	// EXTI0 <- PORTA
+	SYSCFG->EXTICR[BTN / 4] &= ~(0xFU << ((BTN % 4) * 4));  // 0000 = PA
+
+	EXTI->RTSR |= (1U << BTN);
+	EXTI->FTSR &= ~(1U << BTN);
+	EXTI->IMR |= (1U << BTN);
+
+	NVIC_IPR[EXTI0_IRQn] = (10U << 4); // Priority 10
+	NVIC_ISER0 (1U << EXTI0_IRQn);
+
+	uint8_t led = 0;
+
+	for(;;)
+	{
+		if (g_btn_flag)
+		{
+			g_btn_flag = 0;
+			led ^= 1U;
+			GPIOD->BSRR = led ? (1U << LED) : (1U << (LED + 16));
+		}
+
+		// CPU is free here - no pin polling at all
+	}
 }
 
 
