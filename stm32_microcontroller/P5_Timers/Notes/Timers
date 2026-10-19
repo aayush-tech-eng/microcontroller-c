@@ -1,0 +1,43 @@
+Timers are hardware counters that tick independently of the CPU. The delay() method created in Phase 3
+is useless for real timing - it changes with clock speed and optimization level- dependent of CPU.
+Timer, however, gives you exact periods, PWM, frequency measurement, and precise delays while the CPU 
+does other work. 
+
+Timer types on F407
+Type 		Timers			Counter					Feature
+Basic		TIM6, TIM7		16-bit					Count + Interrupt Only. No pins
+General		TIM2 - TIM5		TIM2 & TIM5 = 32-bit	4 Channels: PWM, Input Capture, Encoder
+							TIM3 & TIM4 = 16-bit
+Advanced	TIM1, TIM8		16-bit					All of the above + complementary outputs, dead-time, breakinput
+SysTick     --              24-bit					ARM Core, Down-Counter, For OS Tick
+
+Timer Hardware Registers
+A. PSC - Prescaler: divides the input clock (PSC category Configuration)               Sets the prescaler
+B. ARR - Auto-reload: the value the counter resets at (ARR category Configuration)     Sets the counter limit
+C. CNT - Counter: the live value (CNT category Counter)                                Holds the current count
+D. CR1 - CR1 category Control														   Enables the timer and selects counting mode
+E. DIER - Interrupt/DMA Control														   Enables interrupts and DMA requests
+F. SR  - Status 																	   Reports timer events and flags
+G. EGR - Event Generation															   Triggers timer events through software
+
+Revision:
+The 6 registers in timer:
+1. PSC: How fast does the counter run?
+2. CNT: What is the current count?
+3. ARR: When does the counter reset?
+4. CR1: Is the timer running?
+5. DIER: Should an event generate an interrupt?
+6. SR: Did the event happen?
+
+Think of it like a washing machine: configuration sets the program, the counter tracks progress, control buttons starts operations, and 
+status indicators report what happened.
+
+The APBx2 Rule: 
+Timer clocks are not the APB Bus Clock:
+- If the APB Prescaler is 1, timer clock = APB clock.
+- If the APB Prescaler is anything else, timer clock = 2 x APB clock.
+
+At full 168 MHz config:
+Bus			Bus Clock 			Timer Clock 		Timers
+APB1		42 MHz				84 MHz				TIM2-7, TIM12-14
+APB2		84 MHz				168 MHz				TIM1, TIM8-11
