@@ -1,0 +1,25 @@
+UART = Universal Asynchronous Receiver/Transmitter. Two wires, two devices, no clock line. This 
+is how your board finally prints text to your PC.
+
+How UART Communication Actually Works:
+	- Device A & its MCU: Application on Device A -> UART Peripheral: TX Pin
+	- TX Pin of "Device A" MCU UART Peripheral ----Physical Medium(Wire/Cable)----> RX pin of "Device B"
+	  MCU UART Peripheral
+	  
+	  Here, what happens:
+	  a. Device A's application asks UART to transmit a byte, such as 0x41 (the character A).
+	  b. UART converts the byte into serial bits and sends them through its TX pin.
+	  c. Electrical signals travel through the wires/cables.
+	  d. Device B's RX pin receives the signals, and its UART peripheral reconstructs the byte.
+	  e. Device B's application reads the received bytes. 
+	  
+	  UART handles the conversion between parallel data inside the peripheral and serial bits on its TX/RX
+	  interface. It doesn't inherently understand messages, device addresses, or application commands.
+	  
+Notes:
+1. UART/USART: Transmits and receives serial data.
+2. Physical Medium/Interface: Carries the electrical signals, such as UART-level wires, RS-485 wiring
+3. Communication Protocol: Defines what the data means, such as Modbus RTU commands or Custom Message Format.
+
+UART supports asynchronous serial communication.
+USART can support both asynchronous and synchronous modes, depending on the MCU.

@@ -1,0 +1,40 @@
+PWM: Pulse Width Modulation in Embedded C
+PWM is a technique used to control the average power delivered to a device by switching a digital
+signal ON and OFF very quickly.
+
+It is widely used in industrial embedded system for motor speed control, LED brightness, heater control, and
+power electronics.
+
+1. How PWM works
+Imagine controlling a motor using a switch. Instead of keeping the switch ON continuously, you turn it ON and
+OFF rapidly.
+- ON Time: power is delivered
+- OFF TIme: power is not delivered
+- Duty Cycle: percentage of each period that the signal stays ON
+
+Duty Cycle 25%
+     ____		 ____   	____
+    |    |		|	 |	   |	|
+    |	 |______|	 |_____|	|_____
+    
+Duty Cycle 50%
+	 ________       ________       ________
+	|  	     |     |  	    |     |		   |
+    |		 |_____|	    |_____|		   |_____
+    
+    
+ The two important parameters:
+ - Frequency: How many complete ON/OFF cycles happen per second. Measured in hertz (Hz).
+ - Duty Cycle: How long the signal stays ON during each cycle, expressed as a percentage.
+ 
+ 
+ Duty Cycle = (T_On / T_period) * 100% 
+ 
+ 
+For example, with a 1 kHz PWM signal:
+- Period = 1 ms.
+- 25% duty cycle = 0.25 ms ON, 0.75 ms OFF.
+- 50% duty cycle = 0.5 ms ON, 0.5 ms OFF.
+- 75% duty cycle = 0.75 ms ON, 0.25 ms OFF.
+
+

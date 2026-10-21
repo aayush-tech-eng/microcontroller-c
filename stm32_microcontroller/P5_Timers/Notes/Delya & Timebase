@@ -1,0 +1,19 @@
+SysTick - 24-bit down-counter inside the ARM Core. Always present, vendor-independent, needs no RCC
+clock. Use this for the system tick.
+
+A timer (TIM2-TIM7) - ST peripheral. Save these for PWM, capture, and other jobs that need pins. 
+
+Rule of Thumb: SysTick for the tick, timers for everything else.
+
+SysTick Registers:
+At 0xE000E010, 4 Registers:
+
+Register		Purpose
+CTRL			Enable, interrupt enable, clock source, COUNTFLAG
+LOAD			Reload Value (max 0x00FFFFFF)
+VAL				Current Count - write anything to clear
+CALIB			Calibration (ignore)
+
+CTRL bits: 0 = Enable, 1 = TICKINT (Interrupt), 2 = CLKSOURCE (1 = Processor Clock).
+It counts down. At 0, it relods from LOAD and fires SysTick_Handler.
+
