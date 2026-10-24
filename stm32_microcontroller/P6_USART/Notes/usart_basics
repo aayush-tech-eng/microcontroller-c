@@ -23,3 +23,8 @@ Notes:
 
 UART supports asynchronous serial communication.
 USART can support both asynchronous and synchronous modes, depending on the MCU.
+
+
+Asynchronous means aggreement
+No shared clock, so both sides must independently agree on the baud rate- bits per second. If they 
+disagree by more than ~2%, you get garbage characters.

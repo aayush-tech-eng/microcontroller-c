@@ -1,0 +1,15 @@
+SPI: Serial Peripheral Interface. Fast, simple, synchronous. One master (STM32), one or more slave.
+
+STM32 (master)          Device (slave)
+  SCK  ──────────────────► SCK    clock
+  MOSI ──────────────────► MOSI   master out, slave in
+  MISO ◄────────────────── MISO   master in, slave out
+  NSS  ──────────────────► CS     chip select (active LOW)
+  
+  Four wires. The master generates the clock, so there’s no baud rate to agree on — speed is 
+  whatever the master drives, up to the slave’s limit.
+  
+Master shift reg: [0xA5] ⇄ [0x3C] :Slave shift reg
+After 8 clocks:   [0x3C]   [0xA5]
+
+Consequence: to read a byte, you must send a byte.
